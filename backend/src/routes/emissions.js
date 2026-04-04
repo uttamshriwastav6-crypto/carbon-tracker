@@ -123,7 +123,7 @@ router.post('/api/parse-sms', async (req, res) => {
   // Ensure consistent float precision (e.g. 2 decimal places max)
   response.kg_co2 = parseFloat(response.kg_co2.toFixed(3));
 
-  await supabase.from('emissions').insert({
+  const { error } = await supabase.from('emissions').insert({
     activity: response.activity,
     category: response.category,
     kg_co2: response.kg_co2,
@@ -131,6 +131,12 @@ router.post('/api/parse-sms', async (req, res) => {
     confidence: response.confidence,
     sms_text: sms
   });
+
+  if (error) {
+    console.error('Supabase insert error:', error.message);
+  } else {
+    console.log('Saved to Supabase successfully!');
+  }
 
   return res.json(response);
 });
