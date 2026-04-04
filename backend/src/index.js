@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import emissionRoutes from './routes/emissions.js';
+import transportRoutes from './routes/transport.js';
 
 dotenv.config({ path: '../.env' });
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // Routes mounted at root to fulfill /api/parse-sms directly from the router
 app.use('/', emissionRoutes);
+app.use('/', transportRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
